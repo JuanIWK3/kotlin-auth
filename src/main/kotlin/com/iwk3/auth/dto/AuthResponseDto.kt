@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-class AuthResponseDto (
-    token: String,
-    user: UserResponseDto
+data class AuthResponseDto (
+    val token: String,
+    val user: UserResponseDto
 )

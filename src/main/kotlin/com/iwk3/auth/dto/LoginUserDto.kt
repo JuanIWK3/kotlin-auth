@@ -7,8 +7,7 @@ import lombok.NoArgsConstructor
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-data class RegisterUserDto (
-    val username: String,
+class LoginUserDto (
     val email: String,
-    var password: String
+    val password: String
 )

@@ -15,13 +15,13 @@ import lombok.NoArgsConstructor
 class User(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long,
+    var id: Long?,
     var username: String,
     var email: String,
     var password: String
 ) {
 
     fun toDto(): UserResponseDto {
-        return UserResponseDto(id = this.id, username = this.username, email = this.email)
+        return UserResponseDto(id = this.id!!, username = this.username, email = this.email)
     }
 }

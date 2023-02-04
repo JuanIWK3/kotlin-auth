@@ -1,6 +1,11 @@
 package com.iwk3.auth.controllers
 
+import com.iwk3.auth.dto.LoginUserDto
+import com.iwk3.auth.dto.RegisterUserDto
+import com.iwk3.auth.exceptions.BaseException
+import com.iwk3.auth.exceptions.InvalidCredentialsException
 import com.iwk3.auth.exceptions.UserAlreadyExistsException
+import com.iwk3.auth.exceptions.UserNotFoundException
 import com.iwk3.auth.model.User
 import com.iwk3.auth.service.UserService
 import com.iwk3.auth.services.AuthService
@@ -18,10 +23,19 @@ class AuthController {
     private lateinit var authService: AuthService
 
     @PostMapping("/register")
-    fun create(@RequestBody user: User): ResponseEntity<Any> {
+    fun create(@RequestBody registerDto: RegisterUserDto): ResponseEntity<Any> {
         return try {
-            ResponseEntity.ok().body(authService.register(user))
-        } catch (ex: UserAlreadyExistsException) {
+            ResponseEntity.ok().body(authService.register(registerDto))
+        } catch (ex: BaseException) {
+            ex.res()
+        }
+    }
+
+    @PostMapping("/login")
+    fun login(@RequestBody loginDto: LoginUserDto): ResponseEntity<Any> {
+        return try {
+            ResponseEntity.ok().body(authService.login(loginDto))
+        } catch (ex: BaseException) {
             ex.res()
         }
     }
