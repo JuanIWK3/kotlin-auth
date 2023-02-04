@@ -5,6 +5,10 @@ import jakarta.persistence.*
 import lombok.AllArgsConstructor
 import lombok.Data
 import lombok.NoArgsConstructor
+import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.authority.SimpleGrantedAuthority
+import org.springframework.security.core.userdetails.UserDetails
+import java.util.List
 
 
 @Data
@@ -12,16 +16,49 @@ import lombok.NoArgsConstructor
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "_users")
-class User(
+data class User(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long?,
-    var username: String,
+    @Column
+    var name: String,
+    @Column
     var email: String,
-    var password: String
-) {
+    @Column
+    var pw: String,
+    @Enumerated
+    var role: Role
 
+) : UserDetails {
     fun toDto(): UserResponseDto {
-        return UserResponseDto(id = this.id!!, username = this.username, email = this.email)
+        return UserResponseDto(id = this.id!!, username = this.name, email = this.email)
+    }
+
+    override fun getAuthorities(): Collection<GrantedAuthority?> {
+        return listOf(SimpleGrantedAuthority(role.name))
+    }
+
+    override fun getPassword(): String {
+        return this.pw
+    }
+
+    override fun getUsername(): String {
+        return this.email
+    }
+
+    override fun isAccountNonExpired(): Boolean {
+        return true
+    }
+
+    override fun isAccountNonLocked(): Boolean {
+        return true
+    }
+
+    override fun isCredentialsNonExpired(): Boolean {
+        return true
+    }
+
+    override fun isEnabled(): Boolean {
+        return true
     }
 }

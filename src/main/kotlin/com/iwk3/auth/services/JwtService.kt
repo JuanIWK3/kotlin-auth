@@ -33,14 +33,15 @@ class JwtService {
     }
 
     fun generateToken(extraClaims: Map<String?, Any?>?, userDetails: UserDetails): String {
+        println("==================")
         return Jwts
             .builder()
             .setClaims(extraClaims)
-            .setSubject(userDetails.username)
+            .setSubject(userDetails.getUsername())
             .setIssuedAt(Date(System.currentTimeMillis()))
             .setExpiration(Date(System.currentTimeMillis() + 1000 * 60 * 24))
             .signWith(signInKey, SignatureAlgorithm.HS256)
-            .compact()
+            .compact();
     }
 
     fun isTokenValid(token: String?, userDetails: UserDetails): Boolean {
@@ -55,7 +56,7 @@ class JwtService {
     private fun extractAllClaims(token: String?): Claims {
         return Jwts
             .parserBuilder()
-//            .setSigningKey(signInKey)
+            .setSigningKey(signInKey)
             .build()
             .parseClaimsJws(token)
             .body
