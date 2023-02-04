@@ -1,5 +1,6 @@
 package com.iwk3.auth.controllers
 
+import com.iwk3.auth.exceptions.UserAlreadyExistsException
 import com.iwk3.auth.model.User
 import com.iwk3.auth.service.UserService
 import com.iwk3.auth.services.AuthService
@@ -16,8 +17,12 @@ class AuthController {
     @Autowired
     private lateinit var authService: AuthService
 
-    @PostMapping("/create")
-    fun create(@RequestBody user: User): ResponseEntity<User> {
-        return ResponseEntity.ok().body(authService.register(user))
+    @PostMapping("/register")
+    fun create(@RequestBody user: User): ResponseEntity<Any> {
+        return try {
+            ResponseEntity.ok().body(authService.register(user))
+        } catch (ex: UserAlreadyExistsException) {
+            ex.res()
+        }
     }
 }

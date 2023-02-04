@@ -1,4 +1,4 @@
-package com.iwk3.auth.dto.user
+package com.iwk3.auth.dto
 
 import lombok.AllArgsConstructor
 import lombok.Data
@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-data class GetUserDto (
-    var email: String
+data class RegisterUserDto (
+    val username: String,
+    val email: String,
+    val password: String
 )

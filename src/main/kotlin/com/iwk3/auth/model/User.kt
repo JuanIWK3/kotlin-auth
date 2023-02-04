@@ -1,5 +1,6 @@
 package com.iwk3.auth.model
 
+import com.iwk3.auth.dto.UserResponseDto
 import jakarta.persistence.*
 import lombok.AllArgsConstructor
 import lombok.Data
@@ -20,4 +21,7 @@ class User(
     var password: String
 ) {
 
+    fun toDto(): UserResponseDto {
+        return UserResponseDto(id = this.id, username = this.username, email = this.email)
+    }
 }

@@ -16,6 +16,4 @@ class UserController {
     fun getAll(): ResponseEntity<List<User>> {
         return ResponseEntity.ok().body(userService.getAll())
     }
-
-
 }
