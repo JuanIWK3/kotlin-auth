@@ -1,24 +1,30 @@
 package com.iwk3.auth.config
 
+import com.iwk3.auth.config.jwt.JwtAuthenticationFilter
 import lombok.RequiredArgsConstructor
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.web.SecurityFilterChain
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 class SecurityConfig {
+    @Autowired
+    private lateinit var jwtAuthFilter: JwtAuthenticationFilter
+
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
         http
             .csrf().disable()
             .cors().disable()
             .authorizeHttpRequests()
-            .requestMatchers("/api/**")
+            .requestMatchers("/api/auth/**")
             .permitAll()
             .anyRequest().authenticated()
             .and()
@@ -26,7 +32,7 @@ class SecurityConfig {
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
 //            .authenticationProvider(authenticationProvider)
-//            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter::class.java)
+            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter::class.java)
 
         return http.build()
     }

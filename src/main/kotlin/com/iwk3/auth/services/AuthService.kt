@@ -36,9 +36,9 @@ class AuthService {
     fun register(registerDto: RegisterUserDto): AuthResponseDto {
         var alreadyExists = userRepo.findByEmail(registerDto.email)
 
-//        if (alreadyExists.isPresent) {
-//            throw UserAlreadyExistsException("User with email = '${registerDto.email}' already exists")
-//        }
+        if (alreadyExists.isPresent) {
+            throw UserAlreadyExistsException("User with email = '${registerDto.email}' already exists")
+        }
 
         val user = User(
             id = 0,
@@ -54,7 +54,10 @@ class AuthService {
 
     fun login(userDto: LoginUserDto): AuthResponseDto {
 
-        val user = userRepo.findByEmail(userDto.email).orElseThrow()
+        val user = userRepo.findByEmail(userDto.email).orElseThrow {
+            UserNotFoundException("User with email = '${userDto.email}' not found!")
+        }
+
         val jwtToken = generateToken(user)
 
         if (!passwordEncoder.matches(userDto.password, user.password)) {

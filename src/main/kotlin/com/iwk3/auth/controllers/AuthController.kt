@@ -25,7 +25,7 @@ class AuthController {
     @PostMapping("/register")
     fun create(@RequestBody registerDto: RegisterUserDto): ResponseEntity<Any> {
         return try {
-            ResponseEntity.ok().body(authService.register(registerDto))
+            ResponseEntity.ok(authService.register(registerDto))
         } catch (ex: BaseException) {
             ex.res()
         }
@@ -34,7 +34,7 @@ class AuthController {
     @PostMapping("/login")
     fun login(@RequestBody loginDto: LoginUserDto): ResponseEntity<Any> {
         return try {
-            ResponseEntity.ok().body(authService.login(loginDto))
+            ResponseEntity.ok(authService.login(loginDto))
         } catch (ex: BaseException) {
             ex.res()
         }
