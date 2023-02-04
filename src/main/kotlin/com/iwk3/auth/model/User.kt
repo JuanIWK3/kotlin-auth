@@ -1,19 +1,23 @@
 package com.iwk3.auth.model
 
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
-import jakarta.persistence.Table
+import jakarta.persistence.*
+import lombok.AllArgsConstructor
 import lombok.Data
+import lombok.NoArgsConstructor
+
 
 @Data
 @Entity
-@Table(name = "_user")
-data class User (
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "_users")
+class User(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long,
+    var username: String,
     var email: String,
     var password: String
-)
+) {
+
+}
